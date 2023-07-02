@@ -5,9 +5,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GoogleCalendarController;
 
 //add routes
+//initial call to google calendar permissions to allow access
 Route::get('/calendar', [GoogleCalendarController::class, 'redirectForAuthorization']);
+//callback route to handle google calendar response so saving tokens and events to db
 Route::get('/calendar/callback', [GoogleCalendarController::class, 'handleGoogleCallback']);
+//route to fetch events from google calendar
 Route::get('/calendar/events', [GoogleCalendarController::class, 'getEvents']);
+//clear tokens from db
 Route::get('/calendar/revoke', [GoogleCalendarController::class, 'revokeTokens']);
 
 /*
@@ -21,6 +25,6 @@ Route::get('/calendar/revoke', [GoogleCalendarController::class, 'revokeTokens']
 |
 */
 
-Route::get('/', function () {
+Route::get('/{any}', function () {
     return view('welcome');
-});
+})->where('any', '.*');

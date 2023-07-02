@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('fetch:calendar-events')->everyMinute();
+        $schedule->command('fetch:calendar-events')->dailyAt('23:00');
     }
 
     /**

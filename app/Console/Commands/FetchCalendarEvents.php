@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Console\Commands;
+
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\GoogleCalendarController;
 
 class FetchCalendarEvents extends Command
 {
@@ -39,11 +41,8 @@ class FetchCalendarEvents extends Command
 public function handle(\App\Http\Controllers\GoogleCalendarController $calendarController)
 {
     // Fetch events
-    $events = $calendarController->getEvents();
-
-    // Save events
-    $savedEventsCount = $this->saveEvents($events);
-
+    $controller = app()->make(GoogleCalendarController::class);
+    $savedEventsCount = $controller->fetchEvents();
     // Log
     Log::info("FetchCalendarEvents command ran successfully. {$savedEventsCount} events were saved.");
 

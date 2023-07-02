@@ -118,5 +118,48 @@ public function revokeTokens() {
         return response()->json(['error' => $e->getMessage()], 500);
     }
 }
+
+
+//handles the cron job every night at 11pm
+public function fetchEvents()
+{
+    // Get the access token from the database
+    $token = GoogleToken::latest()->first(); // Assuming you only have one row in this table
+
+    if (!$token) {
+        // No token found, can't fetch events
+        logger::info('No token found, can\'t fetch events');
+        return;
+    }
+
+    $client = $this->getClient();
+    $client->setAccessToken(json_decode($token->access_token, true));
+
+    $service = new Google_Service_Calendar($client);
+    $calendarId = 'primary';
+    $results = $service->events->listEvents($calendarId);
+
+      $savedEventsCount = 0;
+
+    // Save events to database
+    foreach ($results->getItems() as $item) {
+        // Ignore events without date (for example, all-day events)
+        if ($item->getStart()->dateTime != null && $item->getEnd()->dateTime != null) {
+            Event::updateOrCreate(
+                ['event_id' => $item->getId()],
+                [
+                    'title' => $item->getSummary(),
+                    'description' => $item->getDescription(),
+                    'start_date' => new DateTime($item->getStart()->dateTime),
+                    'end_date' => new DateTime($item->getEnd()->dateTime),
+                ]
+            );
+            $savedEventsCount++;
+        }
+    }
+
+    return $savedEventsCount;
+}
+
 }
 
