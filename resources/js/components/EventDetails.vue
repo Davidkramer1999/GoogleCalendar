@@ -1,20 +1,30 @@
 <template>
     <div>
         <p @click="showDetails = !showDetails">
-            {{ new Date(event.start_date).toLocaleDateString() }}
+            {{ event.title }} -
+            {{ formatDate(event?.start_date) }}
         </p>
         <div v-if="showDetails">
-            <h2>{{ event.title }}</h2>
-            <p>{{ event.description }}</p>
+            <p>
+                {{
+                    event?.description == null
+                        ? "No description provided"
+                        : event?.description
+                }}
+            </p>
         </div>
     </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+import { Event } from "../types/types";
+import { format } from "date-fns-tz";
+
+export default defineComponent({
     props: {
         event: {
-            type: Object,
+            type: Object as () => Event,
             required: true,
         },
     },
@@ -23,7 +33,12 @@ export default {
             showDetails: false,
         };
     },
-};
+    methods: {
+        formatDate(date: string | Date) {
+            return format(new Date(date), "dd.MM.yyyy");
+        },
+    },
+});
 </script>
 
 <style scoped>

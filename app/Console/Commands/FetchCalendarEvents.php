@@ -38,12 +38,14 @@ class FetchCalendarEvents extends Command
      *
      * @return int
      */
-public function handle(\App\Http\Controllers\GoogleCalendarController $calendarController)
+public function handle()
 {
     // Fetch events
     $controller = app()->make(GoogleCalendarController::class);
-    $savedEventsCount = $controller->fetchEvents();
+    $response = $controller->fetchEvents();
+
     // Log
+    $savedEventsCount = $response->getData()->savedEventsCount;
     Log::info("FetchCalendarEvents command ran successfully. {$savedEventsCount} events were saved.");
 
     $this->info('FetchCalendarEvents command ran successfully.');
