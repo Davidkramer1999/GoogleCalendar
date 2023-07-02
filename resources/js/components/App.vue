@@ -1,6 +1,5 @@
 <template>
     <div>
-        <example-component></example-component>
         <events-list></events-list>
     </div>
 </template>

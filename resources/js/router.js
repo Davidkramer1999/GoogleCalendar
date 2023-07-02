@@ -2,7 +2,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import EventsList from './components/EventsList.vue';
 import App from './components/App.vue';
-import ExampleComponent from './components/ExampleComponent.vue'
 
 const routes = [
     {
@@ -15,11 +14,6 @@ const routes = [
         name: 'App',
         component: App
     },
-    {
-        path: '/ExampleComponent',
-        name: 'ExampleComponent',
-        component: ExampleComponent
-    }
     // other routes...
 ]
 

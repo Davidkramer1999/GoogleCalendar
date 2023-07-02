@@ -3,32 +3,40 @@
         <button @click="fetchEvents">Refresh Events</button>
         <ul>
             <li v-for="event in events" :key="event.id">
-                <h2>{{ event.summary }}</h2>
-                <p>{{ event.description }}</p>
+                <EventDetails :event="event" />
             </li>
         </ul>
     </div>
 </template>
 
 <script>
+import axios from "axios";
+import EventDetails from "./EventDetails.vue";
+
 export default {
+    components: {
+        EventDetails,
+    },
     data() {
         return {
             events: [],
         };
     },
     methods: {
-        fetchEvents() {
-            axios
-                .get(`${process.env.MIX_APP_URL}/calendar/events`)
-                .then((response) => {
-                    this.events = response.data;
-                });
+        async fetchEvents() {
+            try {
+                const response = await axios.get(
+                    `${import.meta.env.VITE_MIX_APP_URL}/calendar/events`
+                );
+                this.events = response.data;
+                console.log(response?.data);
+            } catch (error) {
+                console.log(error);
+                // Handle error here, e.g. show user-friendly error message
+            }
         },
     },
     mounted() {
-        console.log(process.env.APP_URL);
-        console.log(` ${process.env.MIX_APP_URL}/calendar/events`);
         this.fetchEvents();
     },
 };
