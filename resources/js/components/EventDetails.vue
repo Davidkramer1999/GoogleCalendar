@@ -1,15 +1,15 @@
 <template>
-    <div>
-        <p @click="showDetails = !showDetails">
-            {{ event.title }} -
-            {{ formatDate(event?.start_date) }}
+    <div class="event-details">
+        <p class="event-title" @click="showDetails = !showDetails">
+            {{ `${event.title} - ${formatDate(event.start_date)} ` }}
+            <span class="arrow">{{ showDetails ? "▲" : "▼" }}</span>
         </p>
-        <div v-if="showDetails">
+        <div v-if="showDetails" class="details">
             <p>
                 {{
-                    event?.description == null
+                    event.description == null
                         ? "No description provided"
-                        : event?.description
+                        : event.description
                 }}
             </p>
         </div>
@@ -18,7 +18,9 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { Event } from "../types/types";
+
+import { Event } from "./types/types";
+
 import { format } from "date-fns-tz";
 
 export default defineComponent({
@@ -42,5 +44,23 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/* add your styles here */
+.event-details {
+    cursor: pointer;
+}
+
+.event-title {
+    display: flex;
+    justify-content: space-between;
+}
+
+.arrow {
+    padding-right: 20px;
+}
+
+.details {
+    margin-top: 10px;
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 5px;
+}
 </style>

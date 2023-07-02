@@ -7,13 +7,20 @@
         "esModuleInterop": true,
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
+        "importHelpers": true,
+        "skipLibCheck": true,
         "sourceMap": true,
         "baseUrl": ".",
         "paths": {
             "@/*": ["src/*"]
         },
-        "lib": ["esnext", "dom"],
-        "types": ["vite/client"]
+          "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ],
+        "types": ["vite/client", "jest"]
     },
     "include": [
         "src/**/*.ts",
