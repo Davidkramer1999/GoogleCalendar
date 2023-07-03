@@ -14,13 +14,8 @@
         "paths": {
             "@/*": ["src/*"]
         },
-          "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ],
-        "types": [ "jest"]
+        "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
+        "types": ["vite/client", "jest"]
     },
     "include": [
         "src/**/*.ts",
@@ -31,6 +26,6 @@
         "resources/js/**/*.tsx",
         "resources/js/**/*.vue",
         "resources/js/**/*.js"
-, "tests/EventDetails.spec.ts"    ],
+    ],
     "exclude": ["node_modules"]
 }

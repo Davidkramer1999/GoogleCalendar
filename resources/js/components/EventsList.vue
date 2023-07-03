@@ -1,15 +1,9 @@
 <template>
     <div class="container">
-        <button class="refresh-button" @click="refetchEvents">
-            Refresh Events
-        </button>
+        <button class="refresh-button" @click="refetchEvents">Refresh Events</button>
         <ErrorMessage :message="errorMessage" />
         <ul class="event-list">
-            <li
-                v-for="event in events"
-                :key="event?.id"
-                class="event-list-item"
-            >
+            <li v-for="event in events" :key="event?.id" class="event-list-item">
                 <EventDetails :event="event" />
             </li>
         </ul>
@@ -17,13 +11,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import axios from "axios";
+import { defineComponent } from 'vue';
+import axios from 'axios';
 
-import EventDetails from "./EventDetails.vue";
-import ErrorMessage from "./ErrorMessage.vue";
+import EventDetails from './EventDetails.vue';
+import ErrorMessage from './ErrorMessage.vue';
 
-import { Event } from "./types/types";
+import { Event } from './types/types';
 
 export default defineComponent({
     components: {
@@ -42,24 +36,20 @@ export default defineComponent({
     methods: {
         async fetchEvents() {
             try {
-                const response = await axios.get(
-                    `${import.meta.env.VITE_MIX_APP_URL}/calendar/events`
-                );
+                const response = await axios.get(`${import.meta.env.API_BASE_URL}/calendar/events`);
                 this.events = response.data;
                 this.errorMessage = null;
             } catch (error) {
-                this.errorMessage = "There was an error fetching events.";
+                this.errorMessage = 'There was an error fetching events.';
             }
         },
         async refetchEvents() {
             try {
-                const response = await axios.get(
-                    `${import.meta.env.VITE_MIX_APP_URL}/refetch`
-                );
+                const response = await axios.get(`${import.meta.env.API_BASE_URL}/refetch`);
                 this.events = response.data?.events;
                 this.errorMessage = null;
             } catch (error) {
-                this.errorMessage = "There was an error refreshing events.";
+                this.errorMessage = 'There was an error refreshing events.';
             }
         },
     },
