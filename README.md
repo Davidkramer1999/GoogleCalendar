@@ -30,6 +30,9 @@ To run the Laravel Scheduler, use the following command:
 bash
 Copy code
 php artisan schedule:run >> /dev/null 2>&1
-Running the Application
-To run the application: php artisan serve
-Open your web browser and visit the address localhost:8000
+To run the application: php artisan serve --port=8001
+Open your web browser and visit the address localhost:8001/auth
+
+Built With
+Laravel - The PHP framework used.
+Vue.js - The JavaScript framework used.

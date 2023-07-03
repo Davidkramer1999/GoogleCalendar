@@ -17,7 +17,7 @@ class GoogleCalendarController extends Controller
         $client = new Google_Client();
         $client->setApplicationName('Google Calendar API Laravel');
         $client->setScopes(Google_Service_Calendar::CALENDAR_READONLY);
-        $client->setRedirectUri('http://localhost:8000/calendar/callback');
+        $client->setRedirectUri('http://localhost:8001/calendar/callback');
         $client->setAuthConfig([
             'client_id' => env('GOOGLE_CLIENT_ID'),
             'client_secret' => env('GOOGLE_CLIENT_SECRET'),
@@ -31,6 +31,7 @@ class GoogleCalendarController extends Controller
             $accessToken = session()->get('access_token');
 
             // If the access token is expired, get a new one with the refresh token
+            log::info('Access token: ', $accessToken);
             if (isset($accessToken['refresh_token'])) {
                 if ($client->isAccessTokenExpired()) {
                     $client->fetchAccessTokenWithRefreshToken($accessToken['refresh_token']);
@@ -98,7 +99,7 @@ class GoogleCalendarController extends Controller
         }
     }
 
-    public function refetchEvents()
+    public function fetchEvents()
     {
         // Check if an access token is stored in the session
         if (!session()->has('access_token')) {

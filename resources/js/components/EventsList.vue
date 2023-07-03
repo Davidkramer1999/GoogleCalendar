@@ -36,7 +36,7 @@ export default defineComponent({
     methods: {
         async fetchEvents() {
             try {
-                const response = await axios.get(`${import.meta.env.API_BASE_URL}/calendar/events`);
+                const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/calendar/events`);
                 this.events = response.data;
                 this.errorMessage = null;
             } catch (error) {
@@ -45,7 +45,7 @@ export default defineComponent({
         },
         async refetchEvents() {
             try {
-                const response = await axios.get(`${import.meta.env.API_BASE_URL}/refetch`);
+                const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/refetch`);
                 this.events = response.data?.events;
                 this.errorMessage = null;
             } catch (error) {
