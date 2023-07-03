@@ -8,13 +8,13 @@ use App\Http\Controllers\GoogleCalendarController;
 
 
 //initial call to google calendar permissions to allow access
-Route::get('/calendar', [GoogleCalendarController::class, 'redirectForAuthorization']);
+Route::get('/auth', [GoogleCalendarController::class, 'redirectForAuthorization']);
 //callback route to handle google calendar response so saving tokens and events to db
 Route::get('/calendar/callback', [GoogleCalendarController::class, 'handleGoogleCallback']);
 //route to fetch events from google calendar
 Route::get('/calendar/events', [GoogleCalendarController::class, 'getEvents']);
 //refetch events from google calendar
-Route::get('/calendar/refetch', [GoogleCalendarController::class, 'fetchEvents']);
+Route::get('/refetch', [GoogleCalendarController::class, 'fetchEvents']);
 //clear tokens from db
 Route::get('/calendar/revoke', [GoogleCalendarController::class, 'revokeTokens']);
 

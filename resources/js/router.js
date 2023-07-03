@@ -5,7 +5,7 @@ import App from './components/App.vue';
 
 const routes = [
     {
-        path: '/listCalendar',
+        path: '/events',
         name: 'Events',
         component: EventsList
     },

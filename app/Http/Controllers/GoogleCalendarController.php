@@ -12,35 +12,41 @@ use Exception;
 
 class GoogleCalendarController extends Controller
 {
-    public function getClient()
-    {
-        $client = new Google_Client();
-        $client->setApplicationName('Google Calendar API Laravel');
-        $client->setScopes(Google_Service_Calendar::CALENDAR_READONLY);
-        $client->setRedirectUri('http://localhost:8000/calendar/callback');
-        $client->setAuthConfig([
-            'client_id' => env('GOOGLE_CLIENT_ID'),
-            'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-            'redirect_uri' => env('GOOGLE_REDIRECT_URI')
-        ]);
-        $client->setAccessType('offline');
-        $client->setPrompt('select_account consent');
+  public function getClient()
+{
+    $client = new Google_Client();
+    $client->setApplicationName('Google Calendar API Laravel');
+    $client->setScopes(Google_Service_Calendar::CALENDAR_READONLY);
+    $client->setRedirectUri('http://localhost:8000/calendar/callback');
+    $client->setAuthConfig([
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect_uri' => env('GOOGLE_REDIRECT_URI')
+    ]);
+    $client->setAccessType('offline');
+    $client->setPrompt('select_account consent');
 
-        // Check if an access token is stored in the session
-        if (session()->has('access_token')) {
-            $accessToken = session()->get('access_token');
+    // Check if an access token is stored in the session
+    if (session()->has('access_token')) {
+        $accessToken = session()->get('access_token');
 
-            // If the access token is expired, get a new one with the refresh token
+        // If the access token is expired, get a new one with the refresh token
+        if (isset($accessToken['refresh_token'])) {
             if ($client->isAccessTokenExpired()) {
                 $client->fetchAccessTokenWithRefreshToken($accessToken['refresh_token']);
                 session()->put('access_token', $client->getAccessToken());
             } else {
                 $client->setAccessToken($accessToken);
             }
+        } else {
+            Log::info('No refresh token found, can\'t fetch events');
         }
-
-        return $client;
     }
+
+    return $client;
+}
+
+
 
     public function redirectForAuthorization()
     {
@@ -63,7 +69,11 @@ class GoogleCalendarController extends Controller
         $this->fetchEventsFromGoogleCalendar();
 
         // Redirect the user to a page of your choice
-        return redirect('/calendar/events');
+        $frontendUrl = env('FRONTEND_URL', 'http://localhost:8001');
+        $redirectUrl = $frontendUrl . '/events';
+
+    // Redirect to the frontend URL
+    return redirect($redirectUrl);
     }
 
     public function getEvents()
@@ -93,12 +103,11 @@ class GoogleCalendarController extends Controller
     //handles the cron job every night at 11pm
     public function fetchEvents()
     {
-                logger::info('No token found, can\'t fetch events');
         // Check if an access token is stored in the session
         if (!session()->has('access_token')) {
             // No token found, can't fetch events 
         //NOTE not redirecting to auth page because it can be run from cron job
-            logger::info('No token found, can\'t fetch events');
+            Log::info('No token found, can\'t fetch events');
             return response()->json(['error' => 'No token found, can\'t fetch events'], 500);
         }
 

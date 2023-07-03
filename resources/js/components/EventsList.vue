@@ -54,7 +54,7 @@ export default defineComponent({
         async refetchEvents() {
             try {
                 const response = await axios.get(
-                    `${import.meta.env.VITE_MIX_APP_URL}/calendar/refetch`
+                    `${import.meta.env.VITE_MIX_APP_URL}/refetch`
                 );
                 this.events = response.data?.events;
                 this.errorMessage = null;
