@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
@@ -11,10 +11,6 @@
 
         <!-- Styles -->
         <style>
-
-</style>
-
-        <style>
             body {
                 font-family: 'Nunito', sans-serif;
             }
@@ -23,10 +19,7 @@
     </head>
     <body class="antialiased">
         <div id="app">
-                  <example-component></example-component>
-        <events-list></events-list>
+            <events-list></events-list>
         </div>
-
-<script src="{{ asset('js/app.js') }}"></script>
     </body>
 </html>

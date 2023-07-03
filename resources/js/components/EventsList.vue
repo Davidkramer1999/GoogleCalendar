@@ -45,10 +45,19 @@ export default defineComponent({
                 const response = await axios.get(
                     `${import.meta.env.VITE_MIX_APP_URL}/calendar/events`
                 );
-                this.events = response.data;
+                this.events = [];
                 this.errorMessage = null;
             } catch (error) {
-                this.errorMessage = "There was an error fetching events.";
+                console.log(error);
+                if (
+                    error.response &&
+                    error.response.data.errorType === "noTokenFound"
+                ) {
+                    this.errorMessage = "No token found, redirecting to login.";
+                    this.redirectToLogin();
+                } else {
+                    this.errorMessage = "There was an error fetching events.";
+                }
             }
         },
         async refetchEvents() {
@@ -56,11 +65,26 @@ export default defineComponent({
                 const response = await axios.get(
                     `${import.meta.env.VITE_MIX_APP_URL}/calendar/refetch`
                 );
+                console.log(response, "refetch");
+
                 this.events = response.data?.events;
                 this.errorMessage = null;
             } catch (error) {
-                this.errorMessage = "There was an error refreshing events.";
+                console.log(error, "refetch");
+                if (
+                    error.response &&
+                    error.response.data.errorType === "noTokenFound"
+                ) {
+                    this.errorMessage = "Session expired. Please login again.";
+                    // Handle redirection here...
+                } else {
+                    this.errorMessage = "There was an error refreshing events.";
+                }
             }
+        },
+
+        redirectToLogin() {
+            // Implement the redirection to login page here...
         },
     },
     mounted() {

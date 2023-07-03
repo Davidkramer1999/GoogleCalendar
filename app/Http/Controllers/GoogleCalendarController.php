@@ -61,9 +61,12 @@ class GoogleCalendarController extends Controller
 
         // Fetch events and save them to the database
         $this->fetchEventsFromGoogleCalendar();
+ $frontendUrl = env('FRONTEND_URL', 'http://localhost:8001');
+    $redirectUrl = $frontendUrl . '/events';
 
-        // Redirect the user to a page of your choice
-        return redirect('/calendar/events');
+    // Redirect to the frontend URL
+    return redirect($redirectUrl);
+     
     }
 
     public function getEvents()
@@ -90,17 +93,18 @@ class GoogleCalendarController extends Controller
     }
 
 
-    //handles the cron job every night at 11pm
-    public function fetchEvents()
+    public function refetchEvents()
     {
-                logger::info('No token found, can\'t fetch events');
         // Check if an access token is stored in the session
         if (!session()->has('access_token')) {
             // No token found, can't fetch events 
         //NOTE not redirecting to auth page because it can be run from cron job
-            logger::info('No token found, can\'t fetch events');
-            return response()->json(['error' => 'No token found, can\'t fetch events'], 500);
-        }
+            Log::info('No token found, can\'t fetch events');
+return response()->json([
+    'noTokens' => true,
+    'errorType' => 'noTokenFound',
+    'message' => 'No token found, can\'t fetch events'
+], 500);            }
 
         // Fetch events and save them to the database
         $savedEventsCount = $this->fetchEventsFromGoogleCalendar();
@@ -114,7 +118,7 @@ class GoogleCalendarController extends Controller
         ]);
     }
 
-    private function fetchEventsFromGoogleCalendar()
+      public function fetchEventsFromGoogleCalendar()
     {
         $client = $this->getClient();
         $service = new Google_Service_Calendar($client);
@@ -139,7 +143,5 @@ class GoogleCalendarController extends Controller
                 $savedEventsCount++;
             }
         }
-
-        return $savedEventsCount;
     }
 }
