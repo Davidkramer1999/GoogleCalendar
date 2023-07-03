@@ -100,8 +100,7 @@ class GoogleCalendarController extends Controller
     }
 
 
-    //handles the cron job every night at 11pm
-    public function fetchEvents()
+    public function refetchEvents()
     {
         // Check if an access token is stored in the session
         if (!session()->has('access_token')) {
@@ -123,7 +122,7 @@ class GoogleCalendarController extends Controller
         ]);
     }
 
-    private function fetchEventsFromGoogleCalendar()
+      public function fetchEventsFromGoogleCalendar()
     {
         $client = $this->getClient();
         $service = new Google_Service_Calendar($client);
@@ -148,7 +147,5 @@ class GoogleCalendarController extends Controller
                 $savedEventsCount++;
             }
         }
-
-        return $savedEventsCount;
     }
 }

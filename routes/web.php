@@ -14,8 +14,8 @@ Route::get('/calendar/callback', [GoogleCalendarController::class, 'handleGoogle
 //route to fetch events from google calendar
 Route::get('/calendar/events', [GoogleCalendarController::class, 'getEvents']);
 //refetch events from google calendar
-Route::get('/refetch', [GoogleCalendarController::class, 'fetchEvents']);
-//clear tokens from db
+Route::get('/refetch', [GoogleCalendarController::class, 'refetchEvents']);
+//clear tokens from session
 Route::get('/calendar/revoke', [GoogleCalendarController::class, 'revokeTokens']);
 
 
