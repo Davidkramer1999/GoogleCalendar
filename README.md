@@ -14,8 +14,8 @@ These instructions will get you a copy of the project up and running on your loc
 Prerequisites
 Here's a list of software you need to install:
 
-PHP
-Composer
+-PHP
+-Composer
 Node.js & npm
 Laravel
 MySQL (or other database system supported by Laravel)
