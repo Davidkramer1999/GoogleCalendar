@@ -12,7 +12,9 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+
 import axios from 'axios';
+import { useToast } from 'vue-toast-notification';
 
 import EventDetails from './EventDetails.vue';
 import ErrorMessage from './ErrorMessage.vue';
@@ -35,21 +37,26 @@ export default defineComponent({
     },
     methods: {
         async fetchEvents() {
+            const $toast = useToast();
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/calendar/events`);
                 this.events = response.data;
                 this.errorMessage = null;
             } catch (error) {
                 this.errorMessage = 'There was an error fetching events.';
+                $toast.error(this.errorMessage);
             }
         },
         async refetchEvents() {
+            const $toast = useToast();
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/refetch`);
                 this.events = response.data?.events;
                 this.errorMessage = null;
+                $toast.success('Events refreshed!');
             } catch (error) {
                 this.errorMessage = 'There was an error refreshing events.';
+                $toast.error(this.errorMessage);
             }
         },
     },
