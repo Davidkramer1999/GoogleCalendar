@@ -20,7 +20,7 @@
       "dom.iterable",
       "scripthost"
     ],
-        "types": ["vite/client", "jest"]
+        "types": [ "jest"]
     },
     "include": [
         "src/**/*.ts",
@@ -31,6 +31,6 @@
         "resources/js/**/*.tsx",
         "resources/js/**/*.vue",
         "resources/js/**/*.js"
-    ],
+, "tests/EventDetails.spec.ts"    ],
     "exclude": ["node_modules"]
 }
