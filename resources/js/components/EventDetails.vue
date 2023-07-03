@@ -1,7 +1,7 @@
 <template>
     <div class="event-details">
         <p class="event-title" @click="showDetails = !showDetails">
-            {{ `${event.title} - ${formatDate(event.start_date)} ` }}
+            {{ `${event.title} - ${formattedDate}` }}
             <span class="arrow">{{ showDetails ? "▲" : "▼" }}</span>
         </p>
         <div v-if="showDetails" class="details">
@@ -18,9 +18,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
 import { Event } from "./types/types";
-
 import { format } from "date-fns-tz";
 
 export default defineComponent({
@@ -35,10 +33,10 @@ export default defineComponent({
             showDetails: false,
         };
     },
-    methods: {
-        formatDate(date: string | Date) {
-            return format(new Date(date), "dd.MM.yyyy");
-        },
+    computed: {
+        formattedDate() {
+            return format(new Date(this.event.start_date), "dd.MM.yyyy");
+        }
     },
 });
 </script>
