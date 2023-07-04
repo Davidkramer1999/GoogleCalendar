@@ -4,7 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use App\Console\Commands\FetchCalendarEvents; // Make sure to import your command at the top of the file
+use App\Console\Commands\FetchCalendarEvents;
 
 class Kernel extends ConsoleKernel
 {
@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('fetch:calendar-events')->dailyAt('23:00'); // running the command daily at 23:00
+        $schedule->command('fetch:calendar-events')->everyMinute();
     }
 
     /**

@@ -3,7 +3,7 @@
         <button class="refresh-button" @click="refetchEvents">Refresh Events</button>
         <ErrorMessage :message="errorMessage" />
         <ul class="event-list">
-            <li v-for="event in events" :key="event?.id" class="event-list-item">
+            <li v-for="event in events" :key="event?.googleEvent?.id" class="event-list-item">
                 <EventDetails :event="event" />
             </li>
         </ul>
@@ -19,7 +19,7 @@ import { useToast } from 'vue-toast-notification';
 import EventDetails from './EventDetails.vue';
 import ErrorMessage from './ErrorMessage.vue';
 
-import { Event } from './types/types';
+import { Events } from './types/types';
 
 export default defineComponent({
     components: {
@@ -27,7 +27,7 @@ export default defineComponent({
         ErrorMessage,
     },
     data(): {
-        events: Event[];
+        events: Events[];
         errorMessage: string | null;
     } {
         return {
@@ -39,7 +39,7 @@ export default defineComponent({
         async fetchEvents() {
             const $toast = useToast();
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/calendar/events`);
+                const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/events`);
                 this.events = response.data;
                 this.errorMessage = null;
             } catch (error) {
@@ -51,7 +51,7 @@ export default defineComponent({
             const $toast = useToast();
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/refetch`);
-                this.events = response.data?.events;
+                this.events = response.data;
                 this.errorMessage = null;
                 $toast.success('Events refreshed!');
             } catch (error) {

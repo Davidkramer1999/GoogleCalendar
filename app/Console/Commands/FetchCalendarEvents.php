@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\GoogleCalendarController;
+use App\Http\Controllers\GoogleCalendar;
 
 class FetchCalendarEvents extends Command
 {
@@ -38,17 +38,10 @@ class FetchCalendarEvents extends Command
      *
      * @return int
      */
-public function handle()
-{
-    // Fetch events
-    $controller = app()->make(GoogleCalendarController::class);
-    $response = $controller->fetchEvents();
-
-    // Log
-    $savedEventsCount = $response->getData()->savedEventsCount;
-    Log::info("FetchCalendarEvents command ran successfully. {$savedEventsCount} events were saved.");
-
-    $this->info('FetchCalendarEvents command ran successfully.');
-}
-
+    public function handle()
+    {
+        // Fetch events
+        $controller = app()->make(GoogleCalendar::class);
+        $controller->fetchAndStoreEvents();
+    }
 }
