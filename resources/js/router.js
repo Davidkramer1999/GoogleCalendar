@@ -9,7 +9,7 @@ const routes = [
         component: EventsList
     },
     {
-        path: '/App',
+        path: '/',
         name: 'App',
         component: App
     },
