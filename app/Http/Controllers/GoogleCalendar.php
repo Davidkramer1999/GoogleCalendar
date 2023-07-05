@@ -14,13 +14,6 @@ use Spatie\GoogleCalendar\Event as GoogleEvent;
 
 class GoogleCalendar extends Controller
 {
-    public function fetchEventsFromDb()
-    {
-        // Retrieve all events from the database
-        $events = Event::all();
-        return response()->json($events);
-    }
-
     public function refetchEvents()
     {
         $events = GoogleEvent::get();
@@ -45,7 +38,7 @@ class GoogleCalendar extends Controller
             }
             Log::info('Fetch and store events ran successfully');
         } catch (\Exception $e) {
-            Log::error('Failed to fetch and store events: ' . $e->getMessage());
+            Log::error('Failed to fetch and store events: ');
         }
     }
 

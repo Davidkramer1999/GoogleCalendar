@@ -1,11 +1,16 @@
 <template>
     <div class="event-details">
         <p class="event-title" @click="showDetails = !showDetails">
-            {{ `${event.title} - ${formattedDate}` }}
+            {{ formattedDate }}
             <span class="arrow">{{ showDetails ? '▲' : '▼' }}</span>
         </p>
         <div v-if="showDetails" class="details">
             <p>
+                Title:
+                {{ event.title == null ? 'No location provided' : event.title }}
+            </p>
+            <p>
+                Description:
                 {{ event.description == null ? 'No description provided' : event.description }}
             </p>
         </div>
@@ -14,13 +19,13 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { Event } from './types/types';
+import { Events } from './types/types';
 import { format } from 'date-fns-tz';
 
 export default defineComponent({
     props: {
         event: {
-            type: Object as () => Event,
+            type: Object as () => Events,
             required: true,
         },
     },
@@ -48,7 +53,9 @@ export default defineComponent({
 }
 
 .arrow {
-    padding-right: 20px;
+    padding-top: 1px;
+    padding-left: 20px;
+    padding-right: 10px;
 }
 
 .details {

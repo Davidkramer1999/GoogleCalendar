@@ -1,12 +1,14 @@
 <template>
     <div class="container">
-        <button class="refresh-button" @click="refetchEvents">Refresh Events</button>
+        <button class="refresh-button" @click="fetchEvents">Refresh Events</button>
         <ErrorMessage :message="errorMessage" />
-        <ul class="event-list">
-            <li v-for="event in events" :key="event?.googleEvent?.id" class="event-list-item">
-                <EventDetails :event="event" />
-            </li>
-        </ul>
+        <div class="container-list">
+            <ul class="event-list">
+                <li v-for="event in events" :key="event?.googleEvent?.id" class="event-list-item">
+                    <EventDetails :event="event" />
+                </li>
+            </ul>
+        </div>
     </div>
 </template>
 
@@ -39,23 +41,11 @@ export default defineComponent({
         async fetchEvents() {
             const $toast = useToast();
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/events`);
+                const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/refetchEvents`);
                 this.events = response.data;
                 this.errorMessage = null;
             } catch (error) {
                 this.errorMessage = 'There was an error fetching events.';
-                $toast.error(this.errorMessage);
-            }
-        },
-        async refetchEvents() {
-            const $toast = useToast();
-            try {
-                const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/refetch`);
-                this.events = response.data;
-                this.errorMessage = null;
-                $toast.success('Events refreshed!');
-            } catch (error) {
-                this.errorMessage = 'There was an error refreshing events.';
                 $toast.error(this.errorMessage);
             }
         },
@@ -71,7 +61,6 @@ export default defineComponent({
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 60%;
     margin: 0 auto;
     padding-top: 20px;
 }
@@ -90,6 +79,11 @@ export default defineComponent({
 
 .refresh-button:hover {
     background-color: #45a049;
+}
+
+.container-list {
+    width: 100%;
+    max-width: 600px;
 }
 
 .event-list {

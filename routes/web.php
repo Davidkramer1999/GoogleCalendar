@@ -7,9 +7,7 @@ use App\Http\Controllers\GoogleCalendar;
 
 //add routes
 
-Route::get('/events', [GoogleCalendar::class, 'fetchEventsFromDb']);
-
-Route::get('/refetch', [GoogleCalendar::class, 'refetchEvents']);
+Route::get('/refetchEvents', [GoogleCalendar::class, 'refetchEvents']);
 
 Route::get('/{any}', function () {
     return view('welcome');
